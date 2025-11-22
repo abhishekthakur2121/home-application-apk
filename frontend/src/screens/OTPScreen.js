@@ -5,10 +5,11 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
+import axios from 'axios';
 import ButtonPrimary from '../components/ButtonPrimary';
 import colors from '../utils/colors';
-import axios from 'axios'; 
 
 export default function OTPScreen({ navigation, route }) {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -37,29 +38,24 @@ export default function OTPScreen({ navigation, route }) {
     }
 
     try {
-      /* 
-       ---------- BACKEND INTEGRATION PLACEHOLDER: VERIFY OTP ----------
-      
-      When backend is ready, replace this block with your actual Axios call.
-      Example:
-      
-      const res = await axios.post('http://<your-backend-url>/api/auth/verify-otp', {
-        otp: enteredOtp,
-        phone: phoneNumber,
+      const LAN_IP = '192.168.215.61';
+      const BASE_URL = Platform.select({
+        ios: `http://${LAN_IP}:5000/api/auth`,
+        android: `http://${LAN_IP}:5000/api/auth`,
+        default: `http://${LAN_IP}:5000/api/auth`,
       });
 
-      // If verification is successful:
-      if (res.data.success) {
-        navigation.replace('Success');
-      } else {
-        alert('Invalid or expired OTP');
-      }
-      ---------------------------------------------------------------------
-      */
+      const response = await axios.post(`${BASE_URL}/verify-otp`, {
+        otp: enteredOtp,
+        phone_number: phoneNumber,
+      });
+      const data = response?.data || {};
 
-      // testing
-      console.log('OTP Verified:', enteredOtp);
-      navigation.replace('Success');
+      if (data.success) {
+        navigation.replace('Home');
+      } else {
+        alert(data.message || 'Invalid or expired OTP');
+      }
     } catch (error) {
       console.error('OTP Verification Error:', error);
       alert('Something went wrong. Please try again.');
@@ -69,22 +65,17 @@ export default function OTPScreen({ navigation, route }) {
   // Resend OTP
   const handleResend = async () => {
     try {
-      /* 
-      ---------- BACKEND INTEGRATION PLACEHOLDER: RESEND OTP ----------
-      
-      This should trigger your backend to send a new OTP to the user.
-      Example:
-
-      await axios.post('http://<your-backend-url>/api/auth/resend-otp', {
-        phone: phoneNumber,
+      const LAN_IP = '192.168.215.61';
+      const BASE_URL = Platform.select({
+        ios: `http://${LAN_IP}:5000/api/auth`,
+        android: `http://${LAN_IP}:5000/api/auth`,
+        default: `http://${LAN_IP}:5000/api/auth`,
       });
 
-      alert('A new OTP has been sent!');
-      ---------------------------------------------------------------------
-      */
+      const response = await axios.post(`${BASE_URL}/resend-otp`, { phone_number: phoneNumber });
+      const data = response?.data || {};
 
-      // testing fr resent 
-      alert('OTP resent successfully!');
+      alert(data.message || 'OTP resent successfully!');
     } catch (error) {
       console.error('Resend OTP Error:', error);
       alert('Could not resend OTP. Please try again later.');

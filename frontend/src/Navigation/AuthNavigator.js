@@ -8,6 +8,11 @@ import LoginScreen from '../screens/LoginScreen';
 import colors from '../utils/colors';
 import homeLogo from '../../assets/homeLogo.png'; 
 import HomeScreen from '../screens/HomeScreen';
+import ServicesScreen from '../screens/ServicesScreen';
+import ServiceDetailScreen from '../screens/ServiceDetailScreen';
+import HomeHealthReportScreen from '../screens/HomeHealthReportScreen';
+import ScanInteriorScreen from '../screens/ScanInteriorScreen';
+import SupportScreen from '../screens/SupportScreen';
 const Stack = createStackNavigator();
 
 const HeaderLogoTitle = () => (
@@ -35,6 +40,11 @@ export default function AuthNavigator() {
       <Stack.Screen name="Success" component={SuccessScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Services" component={ServicesScreen} />
+      <Stack.Screen name="ServiceDetail" component={ServiceDetailScreen} />
+      <Stack.Screen name="HomeHealthReport" component={HomeHealthReportScreen} />
+      <Stack.Screen name="ScanInterior" component={ScanInteriorScreen} />
+      <Stack.Screen name="Support" component={SupportScreen} />
     </Stack.Navigator>
   );
 }
